@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_system/logic/blocs/login_bloc/login_bloc.dart';
 import '../../logic/blocs/register_bloc/register_bloc.dart';
 import '../widgets/snackbar.dart';
 import '../widgets/submit_button.dart';
@@ -29,44 +30,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        body: BlocListener<RegisterUserBloc, RegisterUserState>(
-          listener: (context, state) {
-            if (state is RegisterUserLoadingState) {
-              setState(() {
-                isLoading = true;
-              });
-            } else if (state is RegisterUserSuccessState) {
-              snackBar(context, content: 'Registered successfully!');
-              setState(() {
-                isLoading = false;
-              });
-            } else if (state is RegisterUserFailureState) {
-              snackBar(context, content: state.e);
-              setState(() {
-                isLoading = false;
-              });
-            } else if (state is RegisterUserFailureEmailExistsState) {
-              snackBar(context, content: state.e);
-              setState(() {
-                isLoading = false;
-              });
-            } else if (state is RegisterUserFailureInvalidEmailState) {
-              snackBar(context, content: state.e);
-              setState(() {
-                isLoading = false;
-              });
-            } else if (state is RegisterUserFailureInvalidPasswordState) {
-              snackBar(context, content: state.e);
-              setState(() {
-                isLoading = false;
-              });
-            } else if (state is RegisterUserFailureEmptyFields) {
-              snackBar(context, content: state.e);
-              setState(() {
-                isLoading = false;
-              });
-            }
-          },
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<RegisterUserBloc, RegisterUserState>(
+              listener: (context, state) {
+                if (state is RegisterUserLoadingState) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                } else if (state is RegisterUserSuccessState) {
+                  snackBar(context, content: 'Registered successfully!');
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else if (state is RegisterUserFailureState) {
+                  snackBar(context, content: state.e);
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else if (state is RegisterUserFailureEmailExistsState) {
+                  snackBar(context, content: state.e);
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else if (state is RegisterUserFailureInvalidEmailState) {
+                  snackBar(context, content: state.e);
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else if (state is RegisterUserFailureInvalidPasswordState) {
+                  snackBar(context, content: state.e);
+                  setState(() {
+                    isLoading = false;
+                  });
+                } else if (state is RegisterUserFailureEmptyFields) {
+                  snackBar(context, content: state.e);
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
+              },
+            ),
+            BlocListener<LoginUserBloc, LoginUserState>(
+              listener: (context, state) {
+                if (state is LoginUserWithGoogleSuccessState) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                  snackBar(context, content: 'Logged in successfully!');
+                } else if (state is LoginUserWithGoogleFailureState) {
+                  snackBar(context,
+                      content: 'Failed to login. Try again later.');
+                }
+              },
+            ),
+          ],
           child: Column(
             children: [
               const SizedBox(height: 36),
@@ -128,6 +144,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 64),
+              BlocBuilder<LoginUserBloc, LoginUserState>(
+                builder: (context, state) {
+                  return state is LoginUserWithGoogleLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : googleSubmitButton(
+                          context,
+                          onTap: () {
+                            context.read<LoginUserBloc>().add(
+                                  LoggedInUserWithGoogleEvent(),
+                                );
+                          },
+                        );
+                },
               ),
             ],
           ),

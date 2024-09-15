@@ -30,23 +30,33 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: BlocListener<LoginUserBloc, LoginUserState>(
           listener: (context, state) {
-            if (state is LoginUserLoadingState) {
-            } else if (state is LoginUserSuccessStateVerified) {
+            if (state is LoginUserWithEmailAndPasswordLoadingState) {
+            } else if (state
+                is LoginUserWithEmailAndPasswordSuccessVerifiedState) {
               snackBar(context, content: 'Logged in successfully!');
-            } else if (state is LoginUserSuccessStateUnverified) {
+            } else if (state
+                is LoginUserWithEmailAndPasswordSuccessUnverifiedState) {
               snackBar(
                 context,
                 content:
                     'Logged in successfully but you need to verify your email to continue!',
               );
-            } else if (state is LoginUserFailureState) {
+            } else if (state is LoginUserWithEmailAndPasswordFailureState) {
               snackBar(context, content: state.e);
-            } else if (state is LoginUserFailureInvalidEmailState) {
+            } else if (state
+                is LoginUserWithEmailAndPasswordFailureInvalidEmailState) {
               snackBar(context, content: state.e);
-            } else if (state is LoginUserFailureWrongCredentialsState) {
+            } else if (state
+                is LoginUserWithEmailAndPasswordFailureWrongCredentialsState) {
               snackBar(context, content: state.e);
-            } else if (state is LoginUserFailureEmptyFields) {
+            } else if (state
+                is LoginUserWithEmailAndPasswordFailureEmptyFields) {
               snackBar(context, content: state.e);
+            } else if (state is LoginUserWithGoogleSuccessState) {
+              Navigator.of(context).pushReplacementNamed('/');
+              snackBar(context, content: 'Logged in successfully!');
+            } else if (state is LoginUserWithGoogleFailureState) {
+              snackBar(context, content: 'Failed to login. Try again later.');
             }
           },
           child: Column(
@@ -67,22 +77,22 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               BlocBuilder<LoginUserBloc, LoginUserState>(
                 builder: (context, state) {
-                  return state.isLoading == false
-                      ? submitButton(
+                  return state is LoginUserWithEmailAndPasswordLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : submitButton(
                           context,
                           label: 'Login',
                           onTap: () {
                             context.read<LoginUserBloc>().add(
-                                  LoggedInUserEvent(
+                                  LoggedInUserWithEmailAndPasswordEvent(
                                     email: _emailController.text,
                                     password: _passwordController.text,
                                     context: context,
                                   ),
                                 );
                           },
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
                         );
                 },
               ),
@@ -109,6 +119,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 64),
+              BlocBuilder<LoginUserBloc, LoginUserState>(
+                builder: (context, state) {
+                  return state is LoginUserWithGoogleLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : googleSubmitButton(
+                          context,
+                          onTap: () {
+                            context.read<LoginUserBloc>().add(
+                                  LoggedInUserWithGoogleEvent(),
+                                );
+                          },
+                        );
+                },
+              ),
+              const SizedBox(height: 16),
+              // BlocBuilder<LoginUserBloc, LoginUserState>(
+              //   builder: (context, state) {
+              //     return state is LoginUserWithGoogleLoadingState
+              //         ? const Center(
+              //             child: CircularProgressIndicator(),
+              //           )
+              //         : submitButton(
+              //             context,
+              //             label: 'Login with phone number',
+              //             onTap: () {
+              //               Navigator.of(context).pushNamed('/phone_login');
+              //             },
+              //           );
+              //   },
+              // ),
             ],
           ),
         ),
