@@ -2,63 +2,66 @@ part of 'register_bloc.dart';
 
 class RegisterUserState {
   final bool isLoading;
+  final String content;
 
-  RegisterUserState({required this.isLoading});
+  RegisterUserState({
+    required this.content,
+    required this.isLoading,
+  });
 }
 
 class RegisterUserInitialState extends RegisterUserState {
-  RegisterUserInitialState({required super.isLoading});
+  RegisterUserInitialState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class RegisterUserLoadingState extends RegisterUserState {
-  RegisterUserLoadingState({required super.isLoading});
+  RegisterUserLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class RegisterUserSuccessState extends RegisterUserState {
-  RegisterUserSuccessState({required super.isLoading});
+  RegisterUserSuccessState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class RegisterUserFailureState extends RegisterUserState {
-  final String e;
-
   RegisterUserFailureState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class RegisterUserFailureInvalidEmailState extends RegisterUserState {
-  final String e;
-
   RegisterUserFailureInvalidEmailState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class RegisterUserFailureEmailExistsState extends RegisterUserState {
-  final String e;
-
   RegisterUserFailureEmailExistsState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class RegisterUserFailureInvalidPasswordState extends RegisterUserState {
-  final String e;
-
   RegisterUserFailureInvalidPasswordState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class RegisterUserFailureEmptyFields extends RegisterUserState {
-  final String e;
-
   RegisterUserFailureEmptyFields({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }

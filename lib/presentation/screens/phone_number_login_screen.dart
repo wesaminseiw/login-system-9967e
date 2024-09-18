@@ -30,10 +30,12 @@
 //               Navigator.pushReplacementNamed(context, '/home');
 //               snackBar(context, content: 'Logged in successfully!');
 //             } else if (state is LoginUserWithPhoneNumberCodeSentState) {
-//               snackBar(context,
-//                   content: 'Code sent to ${_phoneController.text}');
+//               snackBar(
+//                 context,
+//                 content: 'Code sent to ${_phoneController.text}',
+//               );
 //             } else if (state is LoginUserWithPhoneNumberFailureState) {
-//               snackBar(context, content: state.e);
+//               snackBar(context, content: 'Failed to login. Try again later.');
 //             } else if (state
 //                 is LoginUserWithPhoneNumberFailureEmptyFieldsState) {
 //               snackBar(context, content: 'Phone cannot be empty!');
@@ -41,6 +43,7 @@
 //           },
 //           child: Column(
 //             children: [
+//               const SizedBox(height: 36),
 //               textField(
 //                 controller: _phoneController,
 //                 hintText: 'Phone Number..',
@@ -54,37 +57,38 @@
 //                   if (phoneNumber.isNotEmpty) {
 //                     BlocProvider.of<LoginUserBloc>(context).add(
 //                       LoggedInUserWithPhoneNumberEvent(
-//                           phoneNumber: phoneNumber),
+//                         phoneNumber: _phoneController,
+//                       ),
 //                     );
 //                   } else {
 //                     snackBar(context, content: 'Phone number cannot be empty!');
 //                   }
 //                 },
 //               ),
-//               const SizedBox(height: 36),
-//               textField(
-//                 controller: _smsController,
-//                 hintText: 'SMS Code..',
-//               ),
-//               const SizedBox(height: 16),
-//               submitButton(
-//                 context,
-//                 label: 'Verify Code',
-//                 onTap: () {
-//                   final smsCode = _smsController.text.trim();
-//                   if (smsCode.isNotEmpty) {
-//                     BlocProvider.of<LoginUserBloc>(context).add(
-//                       VerifyPhoneNumberEvent(
-//                         verificationId: BlocProvider.of<LoginUserBloc>(context)
-//                             .verificationId,
-//                         smsCode: smsCode,
-//                       ),
-//                     );
-//                   } else {
-//                     snackBar(context, content: 'SMS code cannot be empty!');
-//                   }
-//                 },
-//               ),
+//               // const SizedBox(height: 36),
+//               // textField(
+//               //   controller: _smsController,
+//               //   hintText: 'SMS Code..',
+//               // ),
+//               // const SizedBox(height: 16),
+//               // submitButton(
+//               //   context,
+//               //   label: 'Verify Code',
+//               //   onTap: () {
+//               //     final smsCode = _smsController.text.trim();
+//               //     if (smsCode.isNotEmpty) {
+//               //       BlocProvider.of<LoginUserBloc>(context).add(
+//               //         VerifyPhoneNumberEvent(
+//               //           verificationId: BlocProvider.of<LoginUserBloc>(context)
+//               //               .verificationId,
+//               //           smsCode: smsCode,
+//               //         ),
+//               //       );
+//               //     } else {
+//               //       snackBar(context, content: 'SMS code cannot be empty!');
+//               //     }
+//               //   },
+//               // ),
 //             ],
 //           ),
 //         ),

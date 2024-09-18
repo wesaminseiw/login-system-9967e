@@ -17,7 +17,7 @@ class LoggedInUserWithEmailAndPasswordEvent extends LoginUserEvent {
 class LoggedInUserWithGoogleEvent extends LoginUserEvent {}
 
 // class LoggedInUserWithPhoneNumberEvent extends LoginUserEvent {
-//   final String phoneNumber;
+//   final TextEditingController phoneNumber;
 
 //   LoggedInUserWithPhoneNumberEvent({required this.phoneNumber});
 // }

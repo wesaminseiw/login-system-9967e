@@ -1,26 +1,102 @@
 part of 'user_actions_cubit.dart';
 
 @immutable
-abstract class UserActionsState {}
+abstract class UserActionsState {
+  final bool isLoading;
+  final String content;
 
-class UserActionsInitialState extends UserActionsState {}
+  const UserActionsState({
+    required this.content,
+    required this.isLoading,
+  });
+}
+
+class UserActionsInitialState extends UserActionsState {
+  const UserActionsInitialState({
+    required super.isLoading,
+    required super.content,
+  });
+}
 
 // Sign out states
-class UserActionsSignOutInitialState extends UserActionsState {}
+class UserActionsSignOutLoadingState extends UserActionsState {
+  const UserActionsSignOutLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
+}
 
-class UserActionsSignOutSuccessState extends UserActionsState {}
+class UserActionsSignOutSuccessState extends UserActionsState {
+  const UserActionsSignOutSuccessState({
+    required super.isLoading,
+    required super.content,
+  });
+}
 
 class UserActionsSignOutFailureState extends UserActionsState {
-  final String error;
-  UserActionsSignOutFailureState(this.error);
+  const UserActionsSignOutFailureState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 // Delete user states
-class UserActionsDeleteUserInitialState extends UserActionsState {}
+class UserActionsDeleteUserLoadingState extends UserActionsState {
+  const UserActionsDeleteUserLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
+}
 
-class UserActionsDeleteUserSuccessState extends UserActionsState {}
+class UserActionsDeleteUserSuccessState extends UserActionsState {
+  const UserActionsDeleteUserSuccessState({
+    required super.isLoading,
+    required super.content,
+  });
+}
 
 class UserActionsDeleteUserFailureState extends UserActionsState {
-  final String error;
-  UserActionsDeleteUserFailureState(this.error);
+  const UserActionsDeleteUserFailureState({
+    required super.isLoading,
+    required super.content,
+  });
+}
+
+// Check user verification states
+class UserActionsCheckUserVerificationLoadingState extends UserActionsState {
+  const UserActionsCheckUserVerificationLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
+}
+
+class UserActionsCheckUserVerificationVerifiedSuccessfullyState
+    extends UserActionsState {
+  const UserActionsCheckUserVerificationVerifiedSuccessfullyState({
+    required super.isLoading,
+    required super.content,
+  });
+}
+
+class UserActionsCheckUserVerificationFailureState extends UserActionsState {
+  const UserActionsCheckUserVerificationFailureState({
+    required super.isLoading,
+    required super.content,
+  });
+}
+
+class UserActionsCheckUserVerificationUserNotFoundFailureState
+    extends UserActionsState {
+  const UserActionsCheckUserVerificationUserNotFoundFailureState({
+    required super.isLoading,
+    required super.content,
+  });
+}
+
+class UserActionsCheckUserVerificationNotVerifiedState
+    extends UserActionsState {
+  const UserActionsCheckUserVerificationNotVerifiedState({
+    required super.isLoading,
+    required super.content,
+  });
 }

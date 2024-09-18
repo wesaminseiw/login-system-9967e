@@ -2,36 +2,39 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../presentation/screens/verify_email_screen.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
-  RegisterUserBloc() : super(RegisterUserInitialState(isLoading: false)) {
+  RegisterUserBloc()
+      : super(RegisterUserInitialState(
+          isLoading: false,
+          content: '',
+        )) {
     on<RegisteredUserEvent>((event, emit) async {
       log('========= LOADING =========');
       if (event.email.isNotEmpty && event.password.isNotEmpty) {
-        emit(RegisterUserLoadingState(isLoading: true));
+        emit(RegisterUserLoadingState(
+          isLoading: true,
+          content: '',
+        ));
         try {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: event.email,
             password: event.password,
           );
           await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-          Navigator.pushReplacement(
-            event.context,
-            MaterialPageRoute(
-              builder: (context) => const VerifyEmailScreen(),
-            ),
-          );
           log('========= SUCCESS =========');
-          emit(RegisterUserSuccessState(isLoading: false));
+          emit(RegisterUserSuccessState(
+            isLoading: false,
+            content: 'Registered successfully!',
+          ));
         } on FirebaseAuthException catch (e) {
           if (e.code == 'invalid-email') {
             emit(
               RegisterUserFailureInvalidEmailState(
-                e: 'Invalid email format!',
+                content: 'Invalid email format!',
                 isLoading: false,
               ),
             );
@@ -39,7 +42,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           } else if (e.code == 'weak-password') {
             emit(
               RegisterUserFailureInvalidPasswordState(
-                e: 'Password is invalid or weak!',
+                content: 'The provided password is weak!',
                 isLoading: false,
               ),
             );
@@ -47,7 +50,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           } else if (e.code == 'email-already-in-use') {
             emit(
               RegisterUserFailureEmailExistsState(
-                e: 'Email already in use by another user!',
+                content: 'Email already in use by another user!',
                 isLoading: false,
               ),
             );
@@ -55,7 +58,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
           } else {
             emit(
               RegisterUserFailureState(
-                e: 'An error occurred! Try again later',
+                content: 'An error occurred! Try again later',
                 isLoading: false,
               ),
             );
@@ -65,7 +68,7 @@ class RegisterUserBloc extends Bloc<RegisterUserEvent, RegisterUserState> {
       } else {
         emit(
           RegisterUserFailureEmptyFields(
-            e: 'Email or password cannot be empty!',
+            content: 'Email or password cannot be empty!',
             isLoading: false,
           ),
         );

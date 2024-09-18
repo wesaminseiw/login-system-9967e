@@ -7,12 +7,17 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
-  String verificationId = '';
   LoginUserBloc()
-      : super(LoginUserWithEmailAndPasswordInitialState(isLoading: false)) {
+      : super(LoginUserWithEmailAndPasswordInitialState(
+          isLoading: false,
+          content: '',
+        )) {
     on<LoggedInUserWithEmailAndPasswordEvent>((event, emit) async {
       if (event.email.isNotEmpty && event.password.isNotEmpty) {
-        emit(LoginUserWithEmailAndPasswordLoadingState(isLoading: true));
+        emit(LoginUserWithEmailAndPasswordLoadingState(
+          isLoading: true,
+          content: '',
+        ));
         try {
           await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: event.email,
@@ -21,27 +26,24 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
           if (FirebaseAuth.instance.currentUser!.emailVerified) {
             log('========= NAVIGATING TO HOME =========');
             emit(LoginUserWithEmailAndPasswordSuccessVerifiedState(
-                isLoading: false));
-            Navigator.pushReplacementNamed(
-              event.context,
-              '/',
-            );
+              isLoading: false,
+              content: 'Logged in successfully!',
+            ));
           } else {
             log('========= NAVIGATING TO VERIFY =========');
             await FirebaseAuth.instance.currentUser!.sendEmailVerification();
             emit(LoginUserWithEmailAndPasswordSuccessUnverifiedState(
-                isLoading: false));
-            Navigator.pushReplacementNamed(
-              event.context,
-              '/verify',
-            );
+              isLoading: false,
+              content:
+                  'Logged in successfully but you need to verify your email to continue!',
+            ));
           }
           log('========= SUCCESS =========');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'invalid-email') {
             emit(
               LoginUserWithEmailAndPasswordFailureInvalidEmailState(
-                e: 'Invalid email format!',
+                content: 'Invalid email format!',
                 isLoading: false,
               ),
             );
@@ -51,7 +53,7 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
               e.code == 'wrong-password') {
             emit(
               LoginUserWithEmailAndPasswordFailureWrongCredentialsState(
-                e: 'Wrong credentials!',
+                content: 'Wrong credentials!',
                 isLoading: false,
               ),
             );
@@ -61,7 +63,7 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
       } else {
         emit(
           LoginUserWithEmailAndPasswordFailureEmptyFields(
-            e: 'Email or password cannot be empty!',
+            content: 'Email or password cannot be empty!',
             isLoading: false,
           ),
         );
@@ -69,7 +71,7 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
       }
     });
     on<LoggedInUserWithGoogleEvent>((event, emit) async {
-      emit(LoginUserWithGoogleLoadingState(isLoading: true));
+      emit(LoginUserWithGoogleLoadingState(isLoading: true, content: ''));
       try {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -84,67 +86,68 @@ class LoginUserBloc extends Bloc<LoginUserEvent, LoginUserState> {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
-        emit(LoginUserWithGoogleSuccessState(isLoading: false));
+        emit(LoginUserWithGoogleSuccessState(
+          isLoading: false,
+          content: 'Logged in successfully!',
+        ));
       } catch (e) {
         emit(LoginUserWithGoogleFailureState(
           isLoading: false,
-          e: e.toString(),
+          content: e.toString(),
         ));
       }
     });
     //   on<LoggedInUserWithPhoneNumberEvent>((event, emit) async {
+    //     final _auth = FirebaseAuth.instance;
     //     emit(LoginUserWithPhoneNumberLoadingState(isLoading: true));
-    //     if (event.phoneNumber.isNotEmpty) {
+
+    //     if (event.phoneNumber.text.isNotEmpty) {
     //       try {
-    //         await FirebaseAuth.instance.verifyPhoneNumber(
-    //           phoneNumber: event.phoneNumber,
+    //         await _auth.verifyPhoneNumber(
+    //           phoneNumber: event.phoneNumber.text,
     //           verificationCompleted: (PhoneAuthCredential credential) async {
-    //             await FirebaseAuth.instance.signInWithCredential(credential);
-    //             emit(LoginUserWithPhoneNumberSuccessState(isLoading: false));
+    //             try {
+    //               await _auth.signInWithCredential(credential);
+    //               emit(LoginUserWithPhoneNumberSuccessState(isLoading: false));
+    //             } catch (e) {
+    //               emit(LoginUserWithPhoneNumberFailureState(isLoading: false));
+    //             }
     //           },
-    //           verificationFailed: (FirebaseAuthException e) {
-    //             emit(
-    //               LoginUserWithPhoneNumberFailureState(
-    //                 e: e.message ?? 'Error',
-    //                 isLoading: false,
-    //               ),
-    //             );
+    //           verificationFailed: (FirebaseAuthException e) async {
+    //             // emit(LoginUserWithPhoneNumberFailureState(isLoading: false));
     //           },
-    //           codeSent: (String verificationId, int? resendToken) {
-    //             verificationId = verificationId;
+    //           codeSent: (String verificationId, int? resendToken) async {
     //             emit(LoginUserWithPhoneNumberCodeSentState(
     //               verificationId: verificationId,
     //               isLoading: false,
     //             ));
     //           },
-    //           codeAutoRetrievalTimeout: (String verificationId) {},
+    //           codeAutoRetrievalTimeout: (String verificationId) async {
+    //             // Optionally handle timeout here
+    //           },
     //         );
     //       } catch (e) {
-    //         emit(
-    //           LoginUserWithPhoneNumberFailureState(
-    //             e: e.toString(),
-    //             isLoading: false,
-    //           ),
-    //         );
+    //         emit(LoginUserWithPhoneNumberFailureState(isLoading: false));
     //       }
-    //     } else if (event.phoneNumber.isEmpty) {
+    //     } else {
     //       emit(LoginUserWithPhoneNumberFailureEmptyFieldsState(isLoading: false));
     //     }
     //   });
-
     //   on<VerifyPhoneNumberEvent>((event, emit) async {
-    //     emit(LoginUserWithEmailAndPasswordLoadingState(isLoading: true));
-    //     try {
-    //       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-    //         verificationId: event.verificationId,
-    //         smsCode: event.smsCode,
-    //       );
-    //       await FirebaseAuth.instance.signInWithCredential(credential);
-    //       emit(LoginUserWithEmailAndPasswordSuccessVerifiedState(
-    //           isLoading: false));
-    //     } catch (e) {
-    //       emit(LoginUserWithEmailAndPasswordFailureState(
-    //           e: 'Invalid code', isLoading: false));
+    //     emit(LoginUserWithPhoneNumberLoadingState(isLoading: true));
+    //     if (event.smsCode.isNotEmpty) {
+    //       try {
+    //         final PhoneAuthCredential credential = PhoneAuthProvider.credential(
+    //           verificationId: event.verificationId,
+    //           smsCode: event.smsCode,
+    //         );
+    //         await FirebaseAuth.instance.signInWithCredential(credential);
+    //         emit(LoginUserWithPhoneNumberSuccessState(isLoading: false));
+    //       } catch (e) {
+    //         emit(LoginUserWithPhoneNumberFailureState(isLoading: false));
+    //       }
+    //     } else {
+    //       emit(LoginUserWithPhoneNumberFailureEmptyFieldsState(isLoading: false));
     //     }
     //   });
   }

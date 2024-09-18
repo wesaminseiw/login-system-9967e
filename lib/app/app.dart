@@ -17,18 +17,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AppRouter _appRouter = AppRouter();
+  final userActionsCubit = UserActionsCubit();
+  final loginBloc = LoginUserBloc();
+  final registerBloc = RegisterUserBloc();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => RegisterUserBloc(),
+          create: (context) => registerBloc,
         ),
         BlocProvider(
-          create: (context) => LoginUserBloc(),
+          create: (context) => loginBloc,
         ),
         BlocProvider(
-          create: (context) => UserActionsCubit(),
+          create: (context) => userActionsCubit,
         ),
       ],
       child: StreamBuilder<User?>(
@@ -37,6 +41,9 @@ class _MyAppState extends State<MyApp> {
             FirebaseAuth.instance.currentUser?.reload();
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                fontFamily: 'Montserrat',
+              ),
               home: FirebaseAuth.instance.currentUser != null
                   ? FirebaseAuth.instance.currentUser!.emailVerified
                       ? const HomeScreen()

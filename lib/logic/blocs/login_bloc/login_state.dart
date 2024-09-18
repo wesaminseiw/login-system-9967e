@@ -2,86 +2,100 @@ part of 'login_bloc.dart';
 
 abstract class LoginUserState {
   final bool isLoading;
+  final String content;
 
-  LoginUserState({required this.isLoading});
+  LoginUserState({
+    required this.content,
+    required this.isLoading,
+  });
 }
 
 class LoginUserWithEmailAndPasswordInitialState extends LoginUserState {
-  LoginUserWithEmailAndPasswordInitialState({required super.isLoading});
+  LoginUserWithEmailAndPasswordInitialState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithEmailAndPasswordLoadingState extends LoginUserState {
-  LoginUserWithEmailAndPasswordLoadingState({required super.isLoading});
+  LoginUserWithEmailAndPasswordLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithEmailAndPasswordSuccessUnverifiedState
     extends LoginUserState {
-  LoginUserWithEmailAndPasswordSuccessUnverifiedState(
-      {required super.isLoading});
+  LoginUserWithEmailAndPasswordSuccessUnverifiedState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithEmailAndPasswordSuccessVerifiedState extends LoginUserState {
-  LoginUserWithEmailAndPasswordSuccessVerifiedState({required super.isLoading});
+  LoginUserWithEmailAndPasswordSuccessVerifiedState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithEmailAndPasswordFailureState extends LoginUserState {
-  final String e;
-
   LoginUserWithEmailAndPasswordFailureState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class LoginUserWithEmailAndPasswordFailureWrongCredentialsState
     extends LoginUserState {
-  final String e;
-
   LoginUserWithEmailAndPasswordFailureWrongCredentialsState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class LoginUserWithEmailAndPasswordFailureInvalidEmailState
     extends LoginUserState {
-  final String e;
-
   LoginUserWithEmailAndPasswordFailureInvalidEmailState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 class LoginUserWithEmailAndPasswordFailureEmptyFields extends LoginUserState {
-  final String e;
-
   LoginUserWithEmailAndPasswordFailureEmptyFields({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
 // google sign in states
 
 class LoginUserWithGoogleInitialState extends LoginUserState {
-  LoginUserWithGoogleInitialState({required super.isLoading});
+  LoginUserWithGoogleInitialState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithGoogleLoadingState extends LoginUserState {
-  LoginUserWithGoogleLoadingState({required super.isLoading});
+  LoginUserWithGoogleLoadingState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithGoogleSuccessState extends LoginUserState {
-  LoginUserWithGoogleSuccessState({required super.isLoading});
+  LoginUserWithGoogleSuccessState({
+    required super.isLoading,
+    required super.content,
+  });
 }
 
 class LoginUserWithGoogleFailureState extends LoginUserState {
-  final String e;
-
   LoginUserWithGoogleFailureState({
-    required this.e,
     required super.isLoading,
+    required super.content,
   });
 }
 
@@ -100,18 +114,11 @@ class LoginUserWithGoogleFailureState extends LoginUserState {
 // }
 
 // class LoginUserWithPhoneNumberFailureState extends LoginUserState {
-//   final String e;
-
-//   LoginUserWithPhoneNumberFailureState({
-//     required this.e,
-//     required super.isLoading,
-//   });
+//   LoginUserWithPhoneNumberFailureState({required super.isLoading});
 // }
 
 // class LoginUserWithPhoneNumberFailureEmptyFieldsState extends LoginUserState {
-//   LoginUserWithPhoneNumberFailureEmptyFieldsState({
-//     required super.isLoading,
-//   });
+//   LoginUserWithPhoneNumberFailureEmptyFieldsState({required super.isLoading});
 // }
 
 // class LoginUserWithPhoneNumberCodeSentState extends LoginUserState {

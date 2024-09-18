@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:login_system/presentation/styles/colors.dart';
 
 Widget submitButton(
   BuildContext context, {
+  double? width,
+  TextStyle? labelStyle,
   required String label,
   required void Function() onTap,
 }) =>
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: onTap,
+    GestureDetector(
+      onTap: onTap,
+      child: Material(
+        elevation: 6,
+        borderRadius: BorderRadius.circular(6),
         child: Container(
-          width: double.infinity,
-          height: 54,
+          width: width ?? double.infinity,
+          height: 60,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(4),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
           ),
           child: Center(
             child: Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: labelStyle ??
+                  TextStyle(
+                    color: primaryColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
         ),
@@ -34,16 +39,17 @@ Widget googleSubmitButton(
   BuildContext context, {
   required void Function() onTap,
 }) =>
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: GestureDetector(
-        onTap: onTap,
+    GestureDetector(
+      onTap: onTap,
+      child: Material(
+        elevation: 6,
+        borderRadius: BorderRadius.circular(6),
         child: Container(
-          width: double.infinity,
-          height: 54,
+          width: MediaQuery.of(context).size.width * 0.436,
+          height: 60,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(4),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
           ),
           child: Center(
             child: Row(
@@ -52,17 +58,8 @@ Widget googleSubmitButton(
               children: [
                 Image.asset(
                   'assets/images/google_icon.png',
-                  width: 25,
-                  height: 25,
-                ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Sign in with Google',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  width: 32,
+                  height: 32,
                 ),
               ],
             ),
