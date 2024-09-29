@@ -51,119 +51,173 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         }
       },
       child: Scaffold(
-        body: Stack(
+        backgroundColor: thirdColor,
+        body: Column(
           children: [
-            // Background image
-            Positioned.fill(
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image:
-                        AssetImage('assets/images/verify_email_screen_bg.png'),
-                    fit: BoxFit.cover,
+            height(MediaQuery.of(context).padding.top),
+            Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: (MediaQuery.of(context).size.height *
+                              0.0578817733990148) +
+                          MediaQuery.of(context).padding.top,
+                    ),
+                    child: Row(
+                      children: [
+                        width(24),
+                        Text(
+                          'Verify',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 44,
+                            fontWeight: FontWeight.bold,
+                            color: fourthColor,
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: MediaQuery.of(context).size.height *
+                              0.1847290640394089,
+                          child: Image.asset(
+                            'assets/images/verify_email.jpg',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        width(24),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-            // Foreground content
-            Column(
-              children: [
-                height(MediaQuery.of(context).size.height / 1.9),
-                const Row(
+                Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Text(
-                        'Verify',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
+                    height(
+                      MediaQuery.of(context).size.height *
+                          (1 - 0.6003694581280788),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height *
+                              (0.6003694581280788) -
+                          (MediaQuery.of(context).padding.top),
+                      decoration: BoxDecoration(
+                        color: secondaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 56),
-                  child: Text(
-                    'We\'ve sent a link to your email inbox, follow it to verify your email.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                Column(
+                  children: [
+                    height(
+                      MediaQuery.of(context).size.height *
+                          (1 - 0.5815270935960591),
                     ),
-                  ),
-                ),
-                height(60),
-                BlocBuilder<UserActionsCubit, UserActionsState>(
-                  builder: (context, state) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        state is UserActionsCheckUserVerificationLoadingState
-                            ? submitButtonCircularProgressIndicator(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.436,
-                              )
-                            : submitButton(
-                                context,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.436,
-                                label: 'Check Verification',
-                                labelStyle: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                onTap: () {
-                                  context
-                                      .read<UserActionsCubit>()
-                                      .checkEmailVerification(context);
-                                },
+                    Container(
+                      height: MediaQuery.of(context).size.height *
+                              (0.5815270935960591) -
+                          (MediaQuery.of(context).padding.top),
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(left: 16, right: 16, top: 96),
+                            child: Text(
+                              'We\'ve sent a link to your email inbox, follow it to verify your email.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                        width(16),
-                        state is UserActionsDeleteUserLoadingState
-                            ? submitButtonCircularProgressIndicator(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.436,
-                              )
-                            : submitButton(
-                                context,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.436,
-                                label: 'Delete Account',
-                                labelStyle: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                onTap: () async {
-                                  await context
-                                      .read<UserActionsCubit>()
-                                      .deleteUser(context);
-                                },
-                              ),
-                      ],
-                    );
-                  },
+                            ),
+                          ),
+                          height(96),
+                          BlocBuilder<UserActionsCubit, UserActionsState>(
+                            builder: (context, state) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  state is UserActionsCheckUserVerificationLoadingState
+                                      ? submitButtonCircularProgressIndicator(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: submitButton(
+                                            context,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            label: 'Check Verification',
+                                            labelStyle: TextStyle(
+                                              color: thirdColor,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            onTap: () {
+                                              context
+                                                  .read<UserActionsCubit>()
+                                                  .checkEmailVerification(
+                                                      context);
+                                            },
+                                          ),
+                                        ),
+                                  height(32),
+                                  state is UserActionsDeleteUserLoadingState
+                                      ? submitButtonCircularProgressIndicator(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: submitButton(
+                                            context,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            label: 'Delete Account',
+                                            labelStyle: TextStyle(
+                                              color: thirdColor,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            onTap: () async {
+                                              await context
+                                                  .read<UserActionsCubit>()
+                                                  .deleteUser(context);
+                                            },
+                                          ),
+                                        ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                // TextButton(
-                //   onPressed: () async {
-                //     context.read<UserActionsCubit>().deleteUser(context);
-                //   },
-                //   child: const Text('Delete account'),
-                // ),
-                // TextButton(
-                //   onPressed: () {
-                //     context
-                //         .read<UserActionsCubit>()
-                //         .checkEmailVerification(context);
-                //   },
-                //   child: const Text('Check verification'),
-                // ),
               ],
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_system/presentation/styles/colors.dart';
 import 'package:login_system/presentation/widgets/circular_progress_indicator.dart';
 import 'package:login_system/presentation/widgets/or_seperator.dart';
 import 'package:login_system/presentation/widgets/sizedboxes.dart';
@@ -18,49 +20,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  // Function to scroll to the bottom after the keyboard appears
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    // Listening for changes in keyboard appearance
-    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-
-    // If the bottom inset changes (keyboard appears), scroll to the bottom
-    if (bottomInset > 0) {
-      _scrollToBottom();
-    }
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: thirdColor,
         body: BlocListener<LoginUserBloc, LoginUserState>(
           listener: (context, state) {
             if (state is LoginUserWithEmailAndPasswordLoadingState) {
@@ -121,128 +87,242 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           },
           child: SingleChildScrollView(
-            controller: _scrollController,
-            child: Container(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height,
-              ),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/login_screen_bg.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
-                children: [
-                  height(MediaQuery.of(context).size.height / 2.1),
-                  const Row(
-                    children: [
-                      Padding(
+            child: Column(
+              children: [
+                height(MediaQuery.of(context).padding.top),
+                Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Padding(
                         padding: EdgeInsets.only(
-                          left: 16,
-                          bottom: 16,
+                          top: MediaQuery.of(context).size.height *
+                                  0.1810344827586207 /
+                                  2 -
+                              MediaQuery.of(context).padding.top * 0.5,
                         ),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 36,
+                        child: SizedBox(
+                          height: 56,
+                          child: Row(
+                            children: [
+                              width(16),
+                              Text(
+                                'Login',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 44,
+                                  fontWeight: FontWeight.bold,
+                                  color: fourthColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  textField(
-                    controller: _emailController,
-                    focusNode: _emailFocusNode,
-                    hintText: 'Email Address..',
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Image.asset(
-                      'assets/images/email.png',
-                      scale: 11,
                     ),
-                  ),
-                  height(16),
-                  textField(
-                    controller: _passwordController,
-                    focusNode: _passwordFocusNode,
-                    hintText: 'Password..',
-                    isObscure: true,
-                    keyboardType: TextInputType.visiblePassword,
-                    prefixIcon: Image.asset(
-                      'assets/images/password.png',
-                      scale: 11,
+                    Column(
+                      children: [
+                        height(
+                          MediaQuery.of(context).size.height *
+                                  (1 - 0.8189655172413793) +
+                              MediaQuery.of(context).padding.top,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height *
+                                  (0.8004926108374384) -
+                              (MediaQuery.of(context).padding.top * 2),
+                          decoration: BoxDecoration(
+                            color: secondaryColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  height(16),
-                  BlocBuilder<LoginUserBloc, LoginUserState>(
-                    builder: (context, state) {
-                      return state is LoginUserWithEmailAndPasswordLoadingState
-                          ? submitButtonCircularProgressIndicator(
-                              width: MediaQuery.of(context).size.width,
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        height(
+                          MediaQuery.of(context).size.height *
+                                  (1 - 0.8004926108374384) +
+                              MediaQuery.of(context).padding.top,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height *
+                                  (0.8004926108374384) -
+                              (MediaQuery.of(context).padding.top * 2),
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              height(64),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 16,
+                                      bottom: 8,
+                                    ),
+                                    child: Text(
+                                      'Your Email',
+                                      style: TextStyle(
+                                        color: thirdColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              child: submitButton(
-                                context,
-                                label: 'Login',
-                                onTap: () {
-                                  context.read<LoginUserBloc>().add(
-                                        LoggedInUserWithEmailAndPasswordEvent(
-                                          email: _emailController.text,
-                                          password: _passwordController.text,
-                                          context: context,
-                                        ),
-                                      );
+                              textField(
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                prefixIcon: Image.asset(
+                                  'assets/images/email.png',
+                                  scale: 4,
+                                ),
+                              ),
+                              height(32),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 16,
+                                      bottom: 8,
+                                    ),
+                                    child: Text(
+                                      'Your Password',
+                                      style: TextStyle(
+                                        color: thirdColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textField(
+                                controller: _passwordController,
+                                isObscure: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                prefixIcon: Image.asset(
+                                  'assets/images/password.png',
+                                  scale: 4,
+                                ),
+                              ),
+                              height(48),
+                              BlocBuilder<LoginUserBloc, LoginUserState>(
+                                builder: (context, state) {
+                                  return state
+                                          is LoginUserWithEmailAndPasswordLoadingState
+                                      ? submitButtonCircularProgressIndicator(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: submitButton(
+                                            context,
+                                            label: 'Login',
+                                            onTap: () {
+                                              context.read<LoginUserBloc>().add(
+                                                    LoggedInUserWithEmailAndPasswordEvent(
+                                                      email:
+                                                          _emailController.text,
+                                                      password:
+                                                          _passwordController
+                                                              .text,
+                                                      context: context,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                        );
                                 },
                               ),
-                            );
-                    },
-                  ),
-                  height(18),
-                  orSeperator(),
-                  height(18),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: submitButton(
-                          context,
-                          width: MediaQuery.of(context).size.width * 0.436,
-                          label: 'Sign Up',
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              '/register',
-                            );
-                          },
+                              height(32),
+                              orSeperator(),
+                              height(32),
+                              Column(
+                                children: [
+                                  BlocBuilder<LoginUserBloc, LoginUserState>(
+                                    builder: (context, state) {
+                                      return state
+                                              is LoginUserWithGoogleLoadingState
+                                          ? submitButtonCircularProgressIndicator(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                            )
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 16,
+                                              ),
+                                              child: googleSubmitButton(
+                                                context,
+                                                onTap: () {
+                                                  context
+                                                      .read<LoginUserBloc>()
+                                                      .add(
+                                                        LoggedInUserWithGoogleEvent(),
+                                                      );
+                                                },
+                                                isLogin: true,
+                                              ),
+                                            );
+                                    },
+                                  ),
+                                  height(32),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Don\'t have an account? ',
+                                        style: TextStyle(
+                                          color: thirdColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            '/register',
+                                          );
+                                        },
+                                        child: Text(
+                                          'Register now.',
+                                          style: TextStyle(
+                                            color: thirdColor,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      BlocBuilder<LoginUserBloc, LoginUserState>(
-                        builder: (context, state) {
-                          return state is LoginUserWithGoogleLoadingState
-                              ? submitButtonCircularProgressIndicator(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.436,
-                                )
-                              : googleSubmitButton(
-                                  context,
-                                  onTap: () {
-                                    context.read<LoginUserBloc>().add(
-                                          LoggedInUserWithGoogleEvent(),
-                                        );
-                                  },
-                                );
-                        },
-                      ),
-                    ],
-                  ),
-                  height(16),
-                ],
-              ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

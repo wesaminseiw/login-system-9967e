@@ -3,7 +3,6 @@ import 'package:login_system/presentation/styles/colors.dart';
 
 Widget textField({
   required TextEditingController controller,
-  required String hintText,
   Widget? prefixIcon,
   FocusNode? focusNode,
   bool? isObscure,
@@ -11,76 +10,68 @@ Widget textField({
 }) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Material(
-        color: const Color.fromARGB(0, 0, 0, 0),
-        elevation: 6,
-        borderRadius: BorderRadius.circular(6),
+      child: SizedBox(
+        height: 56,
         child: TextField(
           focusNode: focusNode,
           controller: controller,
           keyboardType: keyboardType ?? TextInputType.text,
           obscureText: isObscure ?? false,
           obscuringCharacter: '●',
-          cursorColor: Colors.white,
-          style: const TextStyle(
-            color: Colors.white,
+          cursorColor: primaryColor,
+          style: TextStyle(
+            color: primaryColor,
             fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
-            fillColor: primaryColor,
+            fillColor: thirdColor,
             filled: true,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 16,
-            ),
-            hintText: hintText,
-            hintStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
             disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(
-                color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: thirdColor,
                 width: 2,
               ),
             ),
-            prefixIcon: prefixIcon,
+            prefixIcon: Padding(
+              padding: const EdgeInsets.all(12),
+              child: prefixIcon,
+            ),
           ),
         ),
       ),
