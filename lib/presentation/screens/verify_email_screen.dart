@@ -20,6 +20,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     return BlocListener<UserActionsCubit, UserActionsState>(
       listener: (context, state) {
         if (state is UserActionsDeleteUserSuccessState) {
+          Navigator.of(context).pushReplacementNamed('/login');
           successSnackBar(
             context,
             content: state.content,
